@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonJs",
+        "rootDir": "./src",
+        "strict": true,
+        "strictNullChecks": false,
+        "noImplicitAny": true,
+        "esModuleInterop": true
+    },
+    "exclude": [ "node_modules", "**/*.test.ts" ],
+    "include": [ "src/**/*" ],
+    "files": [ "./setupJest.d.ts" ]
+}
