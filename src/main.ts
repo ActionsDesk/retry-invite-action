@@ -16,6 +16,7 @@ function getEmail(issueBody: string, regexString: string): string {
 }
 
 async function run(): Promise<void> {
+  core.debug(JSON.stringify(github.context.payload));
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (GITHUB_TOKEN) {
