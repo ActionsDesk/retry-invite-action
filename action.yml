@@ -1,0 +1,6 @@
+name: 'Retries the failed issues'
+description: 'This action will loop through open issues that are marked to be retried, and resend the invite'
+author: 'Chris McIntosh'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
