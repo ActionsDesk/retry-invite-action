@@ -439,7 +439,9 @@ function run() {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
             if (GITHUB_TOKEN) {
                 const octokit = new github.GitHub(GITHUB_TOKEN);
+                core.debug(JSON.stringify(github.context.payload));
                 const payload = github.context.payload;
+                core.debug(JSON.stringify(payload));
                 const owner = payload.repository.owner.login;
                 const repo = payload.repository.name;
                 const emailRegex = core.getInput("EMAIL_REGEX");
