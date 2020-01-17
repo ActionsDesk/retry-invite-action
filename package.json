@@ -11,6 +11,12 @@
     "format": "prettier --write **/*.ts",
     "lint": "eslint src/**/*.ts"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx npm-run-all format lint test",
+      "pre-push": "npx npm-run-all format lint test"
+    }
+  },
   "devDependencies": {
     "@types/jest": "^24.0.25",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
