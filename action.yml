@@ -1,6 +1,13 @@
 name: 'Retries the failed issues'
 description: 'This action will loop through open issues that are marked to be retried, and resend the invite'
 author: 'Chris McIntosh'
+inputs:
+  EMAIL_REGEX:
+    description: 'Regex, including capture group, that will pull out the email'
+    required: true
+  USER_ROLE:
+    description: 'Role to invite the users with'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
