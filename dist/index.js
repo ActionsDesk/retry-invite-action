@@ -435,6 +435,7 @@ function getEmail(issueBody, regexString) {
 exports.getEmail = getEmail;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
+        core.debug(JSON.stringify(github.context.payload));
         try {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
             if (GITHUB_TOKEN) {
