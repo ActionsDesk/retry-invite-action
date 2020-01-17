@@ -20,7 +20,9 @@ async function run(): Promise<void> {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (GITHUB_TOKEN) {
       const octokit: github.GitHub = new github.GitHub(GITHUB_TOKEN);
+      core.debug(JSON.stringify(github.context.payload));
       const payload: WebhookPayload = github.context.payload;
+      core.debug(JSON.stringify(payload));
       const owner: string = payload.repository.owner.login;
       const repo: string = payload.repository.name;
 
