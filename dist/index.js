@@ -435,67 +435,56 @@ function getEmail(issueBody, regexString) {
 exports.getEmail = getEmail;
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.debug(JSON.stringify(github.context.payload));
         try {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
             if (GITHUB_TOKEN) {
                 const octokit = new github.GitHub(GITHUB_TOKEN);
-                core.debug(JSON.stringify(github.context.payload));
-                const payload = github.context.payload;
-                core.debug(JSON.stringify(payload));
-                /* const owner: string = payload.repository.owner.login;
-                const repo: string = payload.repository.name;
-          
-                const emailRegex: string = core.getInput("EMAIL_REGEX");
-                const userRole: string = core.getInput("USER_ROLE") || "direct_member";
-          
+                const owner = core.getInput("OWNER");
+                const repo = core.getInput("REPO");
+                const emailRegex = core.getInput("EMAIL_REGEX");
+                const userRole = core.getInput("USER_ROLE") || "direct_member";
                 // This is actually an array but so far can't figure out how to make Typescript know that
-                const issues: any = await octokit.issues.listForRepo({
-                  owner,
-                  repo,
-                  labels: "new-user,retry"
+                const issues = yield octokit.issues.listForRepo({
+                    owner,
+                    repo,
+                    labels: "new-user,retry"
                 });
-          
                 for (const issue of issues.slice(0, 500)) {
-                  const email = getEmail(issue.body, emailRegex);
-                  try {
-                    await octokit.orgs.createInvitation({
-                      org: owner,
-                      role: userRole as any,
-                      email
-                    });
-                  } catch (error) {
-                    if (
-                      error.errors.filter(
-                        (e: any) => e.message === "Over invitation rate limit"
-                      ).length > 0
-                    ) {
-                      break; // Stop execution, we can't run any more
-                    } else {
-                      await octokit.issues.addLabels({
+                    const email = getEmail(issue.body, emailRegex);
+                    try {
+                        yield octokit.orgs.createInvitation({
+                            org: owner,
+                            role: userRole,
+                            email
+                        });
+                    }
+                    catch (error) {
+                        if (error.errors.filter((e) => e.message === "Over invitation rate limit").length > 0) {
+                            break; // Stop execution, we can't run any more
+                        }
+                        else {
+                            yield octokit.issues.addLabels({
+                                owner,
+                                repo,
+                                issue_number: issue.number,
+                                labels: ["automation-failed"]
+                            });
+                            continue;
+                        }
+                    }
+                    yield octokit.issues.addLabels({
                         owner,
                         repo,
                         issue_number: issue.number,
-                        labels: ["automation-failed"]
-                      });
-                      continue;
-                    }
-                  }
-          
-                  await octokit.issues.addLabels({
-                    owner,
-                    repo,
-                    issue_number: issue.number,
-                    labels: ["processed"]
-                  });
-          
-                  await octokit.issues.update({
-                    owner,
-                    repo,
-                    issue_number: issue.number,
-                    state: "closed"
-                  });
-                } */
+                        labels: ["processed"]
+                    });
+                    yield octokit.issues.update({
+                        owner,
+                        repo,
+                        issue_number: issue.number,
+                        state: "closed"
+                    });
+                }
             }
             else {
                 throw Error("Token Not Provided");
