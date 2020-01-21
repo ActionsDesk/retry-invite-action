@@ -278,6 +278,18 @@ describe("Main", () => {
     await run();
     expect(octomock.mockFunctions.createInvitation).toHaveBeenCalledTimes(500);
   });
+
+  it("Ignores any issues that have the automation failed label applied", async () => {
+    let failedIssues = JSON.parse(JSON.stringify(issues));
+    failedIssues[1].labels.push({
+      name: "automation-failed"
+    });
+    octomock.mockFunctions.listForRepo.mockReturnValue(
+      buildIssueReturn(failedIssues)
+    );
+    await run();
+    expect(octomock.mockFunctions.createInvitation).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("getEmail", () => {
