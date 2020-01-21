@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.1",
-    "@actions/github": "^2.0.1"
+    "@actions/github": "^2.0.1",
+    "outdent": "^0.7.0"
   },
   "author": "Chris McIntosh (Chocrates@github.com)",
   "license": "MIT"
