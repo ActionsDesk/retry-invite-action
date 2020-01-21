@@ -2,6 +2,12 @@ name: 'Retries the failed issues'
 description: 'This action will loop through open issues that are marked to be retried, and resend the invite'
 author: 'Chris McIntosh'
 inputs:
+  OWNER:
+    description: 'The Owner of the repo that we are running in'
+    required: true
+  REPO:
+    description: 'The repo that we are running in.  This is not provided as part of the payload when running on a schedule'
+    required: true
   EMAIL_REGEX:
     description: 'Regex, including capture group, that will pull out the email'
     required: true
