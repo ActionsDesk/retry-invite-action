@@ -33,6 +33,7 @@ async function run(): Promise<void> {
         labels: "new-user,retry"
       });
 
+      core.debug(JSON.stringify(issues));
       for (const issue of issues.slice(0, 500)) {
         core.debug(`Processing Issue: ${issue.number}`);
         const email = getEmail(issue.body, emailRegex);
