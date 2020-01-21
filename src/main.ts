@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { WebhookPayload } from "@actions/github/lib/interfaces";
 
 function getEmail(issueBody: string, regexString: string): string {
   const emailRegex = new RegExp(regexString);
@@ -16,16 +15,13 @@ function getEmail(issueBody: string, regexString: string): string {
 }
 
 async function run(): Promise<void> {
-  core.debug(JSON.stringify(github.context.payload));
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (GITHUB_TOKEN) {
       const octokit: github.GitHub = new github.GitHub(GITHUB_TOKEN);
-      core.debug(JSON.stringify(github.context.payload));
-      const payload: WebhookPayload = github.context.payload;
-      core.debug(JSON.stringify(payload));
-      /* const owner: string = payload.repository.owner.login;
-      const repo: string = payload.repository.name;
+        
+      const owner: string = core.getInput("OWNER");
+      const repo: string = core.getInput("REPO");
 
       const emailRegex: string = core.getInput("EMAIL_REGEX");
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
@@ -75,8 +71,8 @@ async function run(): Promise<void> {
           repo,
           issue_number: issue.number,
           state: "closed"
-        }); */
-      }
+        }); 
+      } 
     } else {
       throw Error("Token Not Provided");
     }

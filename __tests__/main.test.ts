@@ -60,24 +60,18 @@ let issues = [
 beforeEach(() => {
   process.env.GITHUB_TOKEN = "token";
   let context = octomock.getContext();
-  context.payload = {
-    repository: {
-      owner: {
-        login: login
-      },
-      name: name
-    },
-    issue: {
-      number: issueNumber
-    }
+    context.payload = {
+        schedule: "*/5 * * * *"
   };
   octomock.updateContext(context);
 
   octomock.mockFunctions.listForRepo.mockReturnValue(issues);
 
-  octomock.mockFunctions.getInput
-    .mockReturnValueOnce("<p>Email of Requester:\\s*(.*?)<\\/p>")
-    .mockReturnValueOnce("direct_member");
+    octomock.mockFunctions.getInput
+        .mockReturnValueOnce(login)
+        .mockReturnValueOnce(name)
+        .mockReturnValueOnce("<p>Email of Requester:\\s*(.*?)<\\/p>")
+        .mockReturnValueOnce("direct_member");
 });
 
 describe("Main", () => {
