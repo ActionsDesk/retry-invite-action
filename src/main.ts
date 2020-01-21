@@ -19,6 +19,7 @@ function getEmail(issueBody: string, regexString: string): string {
 async function run(): Promise<void> {
   try {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+    const automationFailedLabel = "automation-failed";
     if (GITHUB_TOKEN) {
       const octokit: github.GitHub = new github.GitHub(GITHUB_TOKEN);
 
@@ -37,7 +38,16 @@ async function run(): Promise<void> {
 
       const issues: any = listForRepoReturn.data;
 
-      for (const issue of issues.slice(0, 500)) {
+      // Filter out any failed issues
+      const filteredIssues = issues.filter((issue: any) => {
+        return !(
+          issue.labels.filter(
+            (label: any) => label.name === automationFailedLabel
+          ).length > 0
+        );
+      });
+
+      for (const issue of filteredIssues.slice(0, 500)) {
         core.debug(`Processing Issue: ${issue.number}`);
         const email = getEmail(issue.body, emailRegex);
         try {
@@ -58,7 +68,7 @@ async function run(): Promise<void> {
               owner,
               repo,
               issue_number: issue.number,
-              labels: ["automation-failed"]
+              labels: [automationFailedLabel]
             });
             continue;
           }
