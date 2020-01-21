@@ -75,8 +75,8 @@ async function run(): Promise<void> {
           repo,
           issue_number: issue.number,
           state: "closed"
-        }); */
-      }
+        }); 
+      } */
     } else {
       throw Error("Token Not Provided");
     }
