@@ -1,6 +1,8 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 
+import outdent from "outdent";
+
 function getEmail(issueBody: string, regexString: string): string {
   const emailRegex = new RegExp(regexString);
 
@@ -35,7 +37,6 @@ async function run(): Promise<void> {
 
       const issues: any = listForRepoReturn.data;
 
-      core.debug(JSON.stringify(issues));
       for (const issue of issues.slice(0, 500)) {
         core.debug(`Processing Issue: ${issue.number}`);
         const email = getEmail(issue.body, emailRegex);
@@ -62,6 +63,16 @@ async function run(): Promise<void> {
             continue;
           }
         }
+
+        const commentBody: string = outdent`## Outcome
+          :white_check_mark: User with email ${email} has been invited into the org.`;
+
+        await octokit.issues.createComment({
+          owner,
+          repo,
+          issue_number: issue.number,
+          body: commentBody
+        });
 
         await octokit.issues.addLabels({
           owner,

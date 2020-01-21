@@ -1,5 +1,7 @@
 /* global octomock */
 import { run, getEmail } from "../src/main";
+import outdent from "outdent";
+
 let issueNumber = 1;
 let login = "User";
 let name = "RepoName";
@@ -144,6 +146,14 @@ describe("Main", () => {
         repo: name,
         issue_number: issue.number,
         labels: ["processed"]
+      });
+
+      expect(octomock.mockFunctions.createComment).toHaveBeenNthCalledWith(i, {
+        owner: login,
+        repo: name,
+        issue_number: issue.number,
+        body: outdent`## Outcome
+            :white_check_mark: User with email ${testEmail} has been invited into the org.`
       });
 
       expect(octomock.mockFunctions.update).toHaveBeenNthCalledWith(i, {
