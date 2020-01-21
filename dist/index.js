@@ -444,11 +444,12 @@ function run() {
                 const emailRegex = core.getInput("EMAIL_REGEX");
                 const userRole = core.getInput("USER_ROLE") || "direct_member";
                 // This is actually an array but so far can't figure out how to make Typescript know that
-                const issues = yield octokit.issues.listForRepo({
+                const listForRepoReturn = yield octokit.issues.listForRepo({
                     owner,
                     repo,
                     labels: "new-user,retry"
                 });
+                const issues = listForRepoReturn.data;
                 core.debug(JSON.stringify(issues));
                 for (const issue of issues.slice(0, 500)) {
                     core.debug(`Processing Issue: ${issue.number}`);
