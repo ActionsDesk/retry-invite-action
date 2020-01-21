@@ -34,7 +34,8 @@ async function run(): Promise<void> {
       });
 
       for (const issue of issues.slice(0, 500)) {
-        const email = getEmail(issue.body, emailRegex);
+          core.debug(`Processing Issue: ${issue.number}`)
+          const email = getEmail(issue.body, emailRegex);
         try {
           await octokit.orgs.createInvitation({
             org: owner,
