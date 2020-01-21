@@ -19,7 +19,7 @@ async function run(): Promise<void> {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     if (GITHUB_TOKEN) {
       const octokit: github.GitHub = new github.GitHub(GITHUB_TOKEN);
-        
+
       const owner: string = core.getInput("OWNER");
       const repo: string = core.getInput("REPO");
 
@@ -71,8 +71,8 @@ async function run(): Promise<void> {
           repo,
           issue_number: issue.number,
           state: "closed"
-        }); 
-      } 
+        });
+      }
     } else {
       throw Error("Token Not Provided");
     }
