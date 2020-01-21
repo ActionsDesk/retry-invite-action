@@ -24,7 +24,7 @@ async function run(): Promise<void> {
       core.debug(JSON.stringify(github.context.payload));
       const payload: WebhookPayload = github.context.payload;
       core.debug(JSON.stringify(payload));
-      const owner: string = payload.repository.owner.login;
+      /* const owner: string = payload.repository.owner.login;
       const repo: string = payload.repository.name;
 
       const emailRegex: string = core.getInput("EMAIL_REGEX");
@@ -75,7 +75,7 @@ async function run(): Promise<void> {
           repo,
           issue_number: issue.number,
           state: "closed"
-        });
+        }); */
       }
     } else {
       throw Error("Token Not Provided");
