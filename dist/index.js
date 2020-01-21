@@ -441,6 +441,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+            const automationFailedLabel = "automation-failed";
             if (GITHUB_TOKEN) {
                 const octokit = new github.GitHub(GITHUB_TOKEN);
                 const owner = core.getInput("OWNER");
@@ -454,7 +455,11 @@ function run() {
                     labels: "new-user,retry"
                 });
                 const issues = listForRepoReturn.data;
-                for (const issue of issues.slice(0, 500)) {
+                // Filter out any failed issues
+                const filteredIssues = issues.filter((issue) => {
+                    return !(issue.labels.filter((label) => label.name === automationFailedLabel).length > 0);
+                });
+                for (const issue of filteredIssues.slice(0, 500)) {
                     core.debug(`Processing Issue: ${issue.number}`);
                     const email = getEmail(issue.body, emailRegex);
                     try {
@@ -473,7 +478,7 @@ function run() {
                                 owner,
                                 repo,
                                 issue_number: issue.number,
-                                labels: ["automation-failed"]
+                                labels: [automationFailedLabel]
                             });
                             continue;
                         }
