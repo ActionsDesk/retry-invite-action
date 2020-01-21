@@ -27,11 +27,13 @@ async function run(): Promise<void> {
       const userRole: string = core.getInput("USER_ROLE") || "direct_member";
 
       // This is actually an array but so far can't figure out how to make Typescript know that
-      const issues: any = await octokit.issues.listForRepo({
+      const listForRepoReturn: any = await octokit.issues.listForRepo({
         owner,
         repo,
         labels: "new-user,retry"
       });
+
+      const issues: any = listForRepoReturn.data;
 
       core.debug(JSON.stringify(issues));
       for (const issue of issues.slice(0, 500)) {
