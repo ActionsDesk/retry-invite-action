@@ -39,7 +39,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
-    "@actions/core": "^1.2.1",
+    "@actions/core": "^1.2.6",
     "@actions/github": "^2.0.1",
     "outdent": "^0.7.0"
   },
